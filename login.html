@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SyncSkill - Welcome</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <style>
+        /* --- DESIGN SYSTEM TOKENS --- */
+        :root {
+            --primary-dark: #012726;
+            --primary-hover: #023d3c;
+            --accent-green: #33C375;
+            --accent-hover: #29a862;
+            --pure-white: #FFFFFF;
+            --bg-light: #f8fafc;
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            --border-color: #e2e8f0;
+            --radius-xl: 24px;
+            --radius-lg: 16px;
+            --ease-cubic: cubic-bezier(0.25, 0.8, 0.25, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --btn-shadow: 0 4px 12px rgba(1, 39, 38, 0.15);
+        }
+
+        /* --- RESET & BASE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; overflow: hidden; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-light); 
+            color: var(--text-main); 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            background-color: var(--pure-white);
+        }
+
+        /* --- DESKTOP INFO PANEL --- */
+        .info-panel {
+            display: none;
+            flex: 1.2;
+            background: linear-gradient(rgba(1, 39, 38, 0.85), rgba(1, 39, 38, 0.85)), 
+                        url('https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80') center center / cover;
+            color: var(--pure-white);
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 4rem;
+            position: relative;
+        }
+
+        .info-panel-header img { height: 45px; width: auto; filter: brightness(0) invert(1); }
+        .info-panel-content h2 { 
+            font-family: 'DM Sans', sans-serif;
+            font-size: 3.5rem; 
+            font-weight: 800; 
+            line-height: 1.1; 
+            margin-bottom: 1.5rem; 
+            letter-spacing: -0.04em;
+        }
+        .info-panel-content p { 
+            font-size: 1.125rem; 
+            max-width: 480px; 
+            line-height: 1.6; 
+            opacity: 0.9;
+            color: #d1d5db;
+        }
+
+        /* --- MAIN FORM AREA --- */
+        .form-panel-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-y: auto;
+            background: var(--pure-white);
+        }
+
+        /* --- MOBILE WELCOME SCREEN --- */
+        #welcome-screen {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            z-index: 10;
+        }
+        .welcome-top {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+        .welcome-top img { width: 100%; max-width: 280px; height: auto; margin-bottom: 2rem; }
+        
+        .welcome-bottom {
+            background-color: var(--primary-dark);
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+            padding: 3rem 2rem 4rem;
+            color: var(--pure-white);
+            animation: slideUp 0.8s var(--ease-out-back);
+        }
+        .welcome-bottom h1 { 
+            font-family: 'DM Sans', sans-serif;
+            font-size: 2.5rem; 
+            font-weight: 700; 
+            margin-bottom: 1rem; 
+            letter-spacing: -0.03em;
+        }
+        .welcome-bottom p { font-size: 1.05rem; opacity: 0.8; margin-bottom: 2.5rem; line-height: 1.5; }
+
+        /* --- AUTH SECTION --- */
+        #auth-section {
+            display: none;
+            flex-direction: column;
+            padding: 4rem 2rem;
+            width: 100%;
+            max-width: 440px;
+            margin: auto;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .auth-logo { text-align: center; margin-bottom: 2.5rem; }
+        .auth-logo img { height: 40px; width: auto; }
+
+        .form-toggle {
+            display: flex;
+            background-color: #f1f5f9;
+            padding: 6px;
+            border-radius: 16px;
+            margin-bottom: 2.5rem;
+        }
+        .toggle-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-sub);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .toggle-btn.active {
+            background-color: var(--pure-white);
+            color: var(--primary-dark);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .form-container form { display: none; }
+        .form-container form.active { display: block; animation: slideRight 0.4s var(--ease-cubic); }
+
+        .form-header { margin-bottom: 2rem; text-align: center; }
+        .form-header h2 { 
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.8rem; 
+            font-weight: 700; 
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+        .form-header p { color: var(--text-sub); font-size: 0.95rem; }
+
+        /* --- PREMIUM FLOATING INPUTS --- */
+        .input-group { position: relative; margin-bottom: 1.5rem; }
+        .input-group input {
+            width: 100%;
+            padding: 1.25rem 1rem 0.75rem;
+            border: 2px solid transparent;
+            background-color: #f8fafc;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--text-main);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .input-group label {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            color: var(--text-sub);
+            font-weight: 500;
+            pointer-events: none;
+            transition: all 0.3s var(--ease-cubic);
+            background: transparent;
+            padding: 0;
+        }
+
+        .input-group input:focus { border-color: var(--primary-dark); background-color: var(--pure-white); box-shadow: 0 0 0 4px rgba(1, 39, 38, 0.05); }
+        
+        /* Floating logic */
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label {
+            top: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .form-options { display: flex; justify-content: flex-end; margin-top: -0.5rem; margin-bottom: 1.5rem; }
+        .forgot-password { font-size: 0.875rem; color: var(--text-main); font-weight: 600; text-decoration: none; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1.125rem;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--pure-white);
+            background: linear-gradient(135deg, #0f2d2c, #012726);
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out-back);
+            box-shadow: var(--btn-shadow);
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(1, 39, 38, 0.2); }
+
+        .divider { display: flex; align-items: center; text-align: center; color: var(--text-sub); margin: 2rem 0; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border-color); }
+        .divider:not(:empty)::before { margin-right: 1.25rem; }
+        .divider:not(:empty)::after { margin-left: 1.25rem; }
+
+        .btn-google {
+            width: 100%;
+            padding: 1rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-main);
+            background-color: var(--pure-white);
+            border: 1.5px solid var(--border-color);
+            border-radius: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+        .btn-google:hover { background-color: #f8fafc; border-color: #cbd5e1; transform: translateY(-1px); }
+        .google-icon { width: 22px; height: 22px; }
+
+        .switch-form-text { text-align: center; margin-top: 2rem; font-size: 0.95rem; color: var(--text-sub); }
+        .switch-form-text a { color: var(--primary-dark); font-weight: 700; text-decoration: none; cursor: pointer; border-bottom: 2px solid transparent; transition: border-color 0.3s; }
+        .switch-form-text a:hover { border-color: var(--accent-green); }
+
+        /* --- FEEDBACK --- */
+        #loader { display: none; position: fixed; inset: 0; background: rgba(1, 39, 38, 0.6); backdrop-filter: blur(6px); justify-content: center; align-items: center; z-index: 9999; }
+        .spinner { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent-green); border-radius: 50%; animation: spin 1s linear infinite; }
+        #toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); padding: 16px 32px; border-radius: 14px; color: white; font-weight: 600; box-shadow: var(--shadow-premium); transition: bottom 0.5s var(--ease-out-back); z-index: 10000; }
+        #toast.show { bottom: 30px; }
+        #toast.success { background-color: #10b981; }
+        #toast.error { background-color: #ef4444; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideRight { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- RESPONSIVE --- */
+        @media (min-width: 992px) {
+            .info-panel { display: flex; }
+            .form-panel-wrapper { justify-content: center; padding: 4rem; }
+            #welcome-screen { display: none; }
+            #auth-section { display: flex; padding: 0; max-width: 400px; }
+            .auth-logo { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Desktop side panel -->
+        <div class="info-panel">
+            <div class="info-panel-header">
+                <img src="https://ksupvc.wixo.in/image.svg" alt="SyncSkill Logo">
+            </div>
+            <div class="info-panel-text">
+                <div class="info-panel-content">
+                    <h2>Manage your workforce <br>with precision.</h2>
+                    <p>SyncSkill provides advanced tracking for attendance, orders, and payments. Streamline your operations today.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main form area -->
+        <div class="form-panel-wrapper">
+            
+            <!-- Mobile Splash/Welcome -->
+            <div id="welcome-screen">
+                <div class="welcome-top">
+                    <img src="https://ksupvc.wixo.in/image.svg" alt="SyncSkill Logo">
+                    <p style="color: var(--text-sub); font-weight: 500;">Welcome to SyncSkill</p>
+                </div>
+                <div class="welcome-bottom">
+                    <h1>Your business,<br>synchronized.</h1>
+                    <p>Access the unified portal for attendance management and customer orders.</p>
+                    <button id="get-started-btn" class="btn-submit" style="background: var(--accent-green); color: var(--primary-dark); box-shadow: 0 4px 20px rgba(51, 195, 117, 0.3);">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+
+            <!-- Authentication Section -->
+            <div id="auth-section">
+                <div class="auth-logo">
+                    <img src="https://ksupvc.wixo.in/image.svg" alt="SyncSkill Logo">
+                </div>
+
+                <div class="form-toggle">
+                    <button id="show-login-btn" class="toggle-btn active">Sign In</button>
+                    <button id="show-signup-btn" class="toggle-btn">Sign Up</button>
+                </div>
+
+                <div class="form-container">
+                    <!-- Login Form -->
+                    <form id="login-form" class="active">
+                        <div class="form-header">
+                            <h2>Welcome Back</h2>
+                            <p>Sign in to your account to continue</p>
+                        </div>
+                        <div class="input-group">
+                            <input type="email" id="login-email" placeholder=" " required>
+                            <label for="login-email">Email Address</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id="login-password" placeholder=" " required>
+                            <label for="login-password">Password</label>
+                        </div>
+                        <div class="form-options">
+                            <a href="#" class="forgot-password">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn-submit">Sign In</button>
+                        
+                        <div class="divider">OR</div>
+                        
+                        <button type="button" class="btn-google" id="google-signin-btn">
+                            <img class="google-icon" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" alt="Google">
+                            Sign in with Google
+                        </button>
+                        
+                        <p class="switch-form-text">
+                            Don't have an account? <a class="switch-to-signup">Create one</a>
+                        </p>
+                    </form>
+
+                    <!-- Signup Form -->
+                    <form id="signup-form">
+                        <div class="form-header">
+                            <h2>Create Account</h2>
+                            <p>Register as an employee to get started</p>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="signup-username" placeholder=" " required>
+                            <label for="signup-username">Full Name</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="email" id="signup-email" placeholder=" " required>
+                            <label for="signup-email">Email Address</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id="signup-password" placeholder=" " required>
+                            <label for="signup-password">Create Password</label>
+                        </div>
+                        <button type="submit" class="btn-submit">Register</button>
+                        
+                        <p class="switch-form-text">
+                            Already have an account? <a class="switch-to-login">Sign In</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI Feedback -->
+    <div id="toast"></div>
+    <div id="loader"><div class="spinner"></div></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Firebase Configuration (Netlify Injected)
+        const firebaseConfig = {
+            apiKey: "__API_KEY__",
+            authDomain: "__AUTH_DOMAIN__",
+            projectId: "__PROJECT_ID__",
+            storageBucket: "__STORAGE_BUCKET__",
+            messagingSenderId: "__MESSAGING_SENDER_ID__",
+            appId: "__APP_ID__",
+            measurementId: "__MEASUREMENT_ID__"
+        };
+        
+        let db, auth;
+        const ADMIN_EMAIL = "__ADMIN_EMAIL__";
+
+        // Helpers
+        const showLoader = () => document.getElementById('loader').style.display = 'flex';
+        const hideLoader = () => document.getElementById('loader').style.display = 'none';
+        const showToast = (message, type = 'success') => { 
+            const t = document.getElementById('toast'); 
+            t.textContent = message; 
+            t.className = `show ${type}`; 
+            setTimeout(() => { t.className = t.className.replace('show', ''); }, 3000); 
+        };
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                if (!firebaseConfig.apiKey || firebaseConfig.apiKey.startsWith("__")) {
+                    throw new Error("Invalid Configuration");
+                }
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                bindEventListeners();
+                listenForAuthStateChanges();
+            } catch (error) {
+                console.error("Initialization Failed:", error);
+                document.body.innerHTML = `<div style="padding:2rem;text-align:center;min-height:100vh;display:flex;flex-direction:column;justify-content:center;"><h2>System Unavailable</h2><p>Configuration error. Contact admin.</p></div>`;
+            }
+        });
+
+        // Auth Logic
+        function listenForAuthStateChanges() {
+            onAuthStateChanged(auth, user => {
+                if (user) {
+                    showLoader();
+                    handleUserLoggedIn(user);
+                } else {
+                    hideLoader();
+                }
+            });
+        }
+
+        async function handleGoogleLogin() { 
+            const provider = new GoogleAuthProvider(); 
+            try { 
+                showLoader(); 
+                await signInWithPopup(auth, provider);
+            } catch (error) { 
+                console.error("Google Sign-In Error", error); 
+                showToast("Sign in failed. Please try again.", "error"); 
+                hideLoader(); 
+            } 
+        }
+
+        async function handleUserLoggedIn(user) {
+            const userRef = doc(db, "users", user.uid);
+            
+            if (user.email === ADMIN_EMAIL) {
+                await setDoc(userRef, { 
+                    displayName: user.displayName || user.email,
+                    email: user.email,
+                    photoURL: user.photoURL,
+                    role: 'admin', 
+                    status: 'approved',
+                    lastLogin: new Date().toISOString()
+                }, { merge: true });
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                const userDoc = await getDoc(userRef);
+                if (!userDoc.exists()) {
+                    await setDoc(userRef, {
+                        displayName: user.displayName || user.email,
+                        email: user.email,
+                        photoURL: user.photoURL,
+                        role: 'employee',
+                        status: 'pending',
+                        createdAt: new Date().toISOString()
+                    }, { merge: true });
+                    window.location.href = 'pending-approval.html';
+                } else {
+                    await setDoc(userRef, { lastLogin: new Date().toISOString() }, { merge: true });
+                    const userData = userDoc.data();
+                    if (userData.status === 'approved') window.location.href = 'employee-dashboard.html';
+                    else if (userData.status === 'denied') window.location.href = 'access-denied.html';
+                    else window.location.href = 'pending-approval.html';
+                }
+            }
+        }
+
+        function bindEventListeners() {
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const authSection = document.getElementById('auth-section');
+            const getStartedBtn = document.getElementById('get-started-btn');
+            const showLoginBtn = document.getElementById('show-login-btn');
+            const showSignupBtn = document.getElementById('show-signup-btn');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const googleSigninBtn = document.getElementById('google-signin-btn');
+
+            getStartedBtn.addEventListener('click', () => {
+                welcomeScreen.style.display = 'none';
+                authSection.style.display = 'flex';
+            });
+
+            const goToLogin = () => {
+                signupForm.classList.remove('active');
+                showSignupBtn.classList.remove('active');
+                loginForm.classList.add('active');
+                showLoginBtn.classList.add('active');
+            };
+            const goToSignup = () => {
+                loginForm.classList.remove('active');
+                showLoginBtn.classList.remove('active');
+                signupForm.classList.add('active');
+                showSignupBtn.classList.add('active');
+            };
+
+            showLoginBtn.addEventListener('click', goToLogin);
+            showSignupBtn.addEventListener('click', goToSignup);
+            document.querySelectorAll('.switch-to-login').forEach(el => el.addEventListener('click', goToLogin));
+            document.querySelectorAll('.switch-to-signup').forEach(el => el.addEventListener('click', goToSignup));
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                showLoader();
+                const email = loginForm['login-email'].value;
+                const password = loginForm['login-password'].value;
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                } catch (error) {
+                    showToast("Invalid credentials.", "error");
+                    hideLoader();
+                }
+            });
+            
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                showLoader();
+                const email = signupForm['signup-email'].value;
+                const password = signupForm['signup-password'].value;
+                const username = signupForm['signup-username'].value;
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+                    await setDoc(doc(db, "users", user.uid), {
+                        displayName: username,
+                        email: email,
+                        role: 'employee',
+                        status: 'pending',
+                        createdAt: new Date().toISOString()
+                    });
+                } catch (error) {
+                    if (error.code === 'auth/email-already-in-use') showToast('Email already registered.', 'error');
+                    else if (error.code === 'auth/weak-password') showToast('Password too weak.', 'error');
+                    else showToast('Registration failed.', 'error');
+                    hideLoader();
+                }
+            });
+            
+            googleSigninBtn.addEventListener('click', handleGoogleLogin);
+        }
+    </script>
+</body>
+</html>
